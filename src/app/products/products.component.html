@@ -1,0 +1,78 @@
+<div class="container">
+    <h2>Product Master</h2>
+  
+    <form [formGroup]="productForm" (ngSubmit)="addProduct()">
+      <div class="form-group">
+        <label for="productName">Product Name:</label>
+        <input
+          type="text"
+          id="productName"
+          formControlName="productName"
+          class="form-control"
+          [class.is-invalid]="productForm.controls['productName'].invalid && productForm.controls['productName'].touched"
+        />
+        <div *ngIf="productForm.controls['productName'].invalid && productForm.controls['productName'].touched" class="text-danger">
+          Product name is required.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="categoryId">Category:</label>
+        <select
+          id="categoryId"
+          formControlName="categoryId"
+          class="form-control"
+          [class.is-invalid]="productForm.controls['categoryId'].invalid && productForm.controls['categoryId'].touched"
+        >
+          <option value="">Select a category</option>
+          <option *ngFor="let category of categories" [value]="category.categoryId">
+            {{ category.categoryName }}
+          </option>
+        </select>
+        <div *ngIf="productForm.controls['categoryId'].invalid && productForm.controls['categoryId'].touched" class="text-danger">
+          Category is required.
+        </div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary">
+        {{ editingProductId ? 'Update Product' : 'Add Product' }}
+      </button>
+      <button *ngIf="editingProductId" type="button" (click)="cancelEdit()" class="btn btn-secondary">
+        Cancel
+      </button>
+    </form>
+  
+    <table class="table mt-4">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Category Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.productId }}</td>
+          <td>{{ product.productName }}</td>
+          <td>{{ product.categoryName }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="editProduct(product)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.productId)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
+        </li>
+        <li class="page-item">
+          <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  

@@ -1,0 +1,46 @@
+<div class="container">
+    <h2>Category Master</h2>
+  
+    <form [formGroup]="categoryForm" (ngSubmit)="addCategory()">
+      <div class="form-group">
+        <label for="categoryName">Category Name:</label>
+        <input
+          type="text"
+          id="categoryName"
+          formControlName="categoryName"
+          class="form-control"
+          [class.is-invalid]="categoryForm.controls['categoryName'].invalid && categoryForm.controls['categoryName'].touched"
+        />
+        <div *ngIf="categoryForm.controls['categoryName'].invalid && categoryForm.controls['categoryName'].touched" class="text-danger">
+          Category name is required.
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        {{ editingCategoryId ? 'Update Category' : 'Add Category' }}
+      </button>
+      <button *ngIf="editingCategoryId" type="button" (click)="cancelEdit()" class="btn btn-secondary">
+        Cancel
+      </button>
+    </form>
+  
+    <table class="table mt-4">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Category Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of categories">
+          <td>{{ category.categoryId }}</td>
+          <td>{{ category.categoryName }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="editCategory(category)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteCategory(category.categoryId)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
